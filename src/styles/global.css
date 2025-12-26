@@ -1,0 +1,489 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #0f172a;
+  color: white;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.controls {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.cache-view {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.cache-card {
+  background: #1e293b;
+  padding: 12px;
+  border-radius: 8px;
+  width: 80px;
+  position: relative;
+  text-align: center;
+}
+
+.cache-card.lru {
+  border: 2px solid skyblue;
+}
+
+.lru-label {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: skyblue;
+  color: black;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.hit { color: green; }
+.miss { color: red; }
+.eviction { color: orange; }
+
+.logs {
+  max-width: 500px;
+  margin: auto;
+}
+
+.log {
+  margin: 4px 0;
+}
+.timeline-control {
+  margin-top: 16px;
+}
+
+.timeline-control label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.timeline-hint {
+  margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+/* ================= RESPONSIVE LAYOUT ================= */
+
+.app,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Stack panels on small screens */
+@media (max-width: 768px) {
+  .controls,
+  .stats-panel,
+  .log-panel,
+  .cache-view {
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .controls {
+    padding: 12px;
+  }
+}
+/* ===== MAIN LAYOUT ===== */
+
+.main-layout {
+  display: grid;
+  grid-template-columns: 120px 1fr 160px;
+  gap: 20px;
+  padding: 20px;
+  align-items: flex-start;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* CENTER PANEL */
+.center-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* ===== VERTICAL CACHE USAGE ===== */
+
+.left-panel .cache-usage {
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.left-panel .usage-text {
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+
+.left-panel .usage-bar {
+  width: 10px;
+  height: 160px;
+  background-color: #1e293b;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.left-panel .usage-fill {
+  width: 100%;
+  background: linear-gradient(to top, #22c55e, #38bdf8);
+  transition: height 0.3s ease;
+}
+/* ===== CONTROL PANEL LAYOUT ===== */
+
+.capacity-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.mode-selector {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.mode-selector button.active {
+  background-color: #38bdf8;
+  color: #020617;
+}
+
+.put-section,
+.get-section {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.reset-btn {
+  background-color: #ef4444;
+  color: white;
+}
+/* ================= LOG PANEL BACKGROUND ================= */
+
+.logs {
+  margin-top: 24px;
+  padding: 18px 22px;
+
+  background: rgba(255, 255, 255, 0.06); /* soft glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+
+  max-height: 260px;
+  overflow-y: auto;
+
+  backdrop-filter: blur(10px);
+}
+
+/* Individual log lines spacing */
+.logs p,
+.logs div {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+/* ================= INPUT & BUTTON UX POLISH ================= */
+
+.controls input[type="text"],
+.controls input[type="number"] {
+  padding: 10px 14px;
+  border-radius: 999px; /* 👈 oval */
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.95);
+  color: #020617;
+  outline: none;
+  min-width: 180px;
+}
+
+.controls input::placeholder {
+  color: #64748b;
+}
+
+/* ===== DEFAULT BUTTON STYLE ===== */
+
+.controls button {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 2px solid #38bdf8;
+  background: #ffffff;          /* 👈 default WHITE */
+  color: #020617;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+/* ===== PUT / GET TOGGLE ===== */
+
+.mode-selector button.active {
+  background-color: #38bdf8;    /* blue */
+  color: #020617;
+  box-shadow: 0 6px 14px rgba(56, 189, 248, 0.45);
+}
+
+.mode-selector button:not(.active):hover {
+  background-color: #e0f2fe;
+}
+
+
+.controls button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(56, 189, 248, 0.45);
+}
+
+.controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+/* ================= LOGS TITLE & EMPTY STATE ================= */
+
+.logs-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #e5e7eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding-bottom: 6px;
+}
+
+.logs-empty {
+  font-size: 14px;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* Individual log items */
+.log-item {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+/* Optional coloring by type */
+.log-item.hit {
+  color: #22c55e;
+}
+
+.log-item.miss {
+  color: #ef4444;
+}
+
+.log-item.eviction {
+  color: #f59e0b;
+}
+
+.log-item.put {
+  color: #38bdf8;
+}
+/* ================= PUT / GET MODE BUTTONS ================= */
+
+.mode-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.mode-buttons button {
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #38bdf8;
+  transition: all 0.2s ease;
+}
+
+/* Active = Blue */
+.mode-active {
+  background-color: #38bdf8;
+  color: #020617;
+  box-shadow: 0 6px 14px rgba(56, 189, 248, 0.45);
+}
+
+/* Inactive = White */
+.mode-inactive {
+  background-color: #ffffff;
+  color: #020617;
+}
+
+.mode-inactive:hover {
+  background-color: #e0f2fe;
+}
+/* ================= ACTION BUTTON COLORS ================= */
+
+/* Execute PUT & Execute GET — Light Green */
+.put-section button,
+.get-section button {
+  background-color: #86efac;   /* light green */
+  color: #064e3b;
+  border: none;
+}
+
+.put-section button:hover,
+.get-section button:hover {
+  box-shadow: 0 6px 14px rgba(134, 239, 172, 0.5);
+}
+
+/* Reset Cache — Dark Green */
+.reset-btn {
+  background-color: #166534;   /* dark green */
+  color: #ecfdf5;
+  border: none;
+}
+
+.reset-btn:hover {
+  box-shadow: 0 6px 14px rgba(22, 101, 52, 0.5);
+}
+/* ================= FIX ACTION BUTTON COLORS ================= */
+
+/* Reset Cache — Dark Green */
+.controls .reset-btn {
+  background-color: #166534;   /* dark green */
+  color: #ecfdf5;
+  border: none;
+}
+
+/* Execute PUT & Execute GET — Light Green */
+.controls .put-section button,
+.controls .get-section button {
+  background-color: #86efac;   /* light green */
+  color: #064e3b;
+  border: none;
+}
+/* ======================================================
+   FINAL POLISH: RESPONSIVE + ANIMATIONS + ALIGNMENT
+   ====================================================== */
+
+/* ---------- BUTTON PRESS ANIMATION ---------- */
+.controls button {
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.2s ease;
+}
+
+.controls button:active {
+  transform: scale(0.95);
+}
+
+/* ---------- CONTROL PANEL ALIGNMENT ---------- */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+
+.capacity-row,
+.put-section,
+.get-section,
+.mode-selector {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Labels spacing */
+.mode-selector span {
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+/* ---------- INPUT FOCUS FEEDBACK ---------- */
+.controls input:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+}
+
+/* ---------- MOBILE RESPONSIVENESS ---------- */
+@media (max-width: 768px) {
+
+  /* Main layout stacks */
+  .main-layout {
+    flex-direction: column;
+  }
+
+  /* Panels full width */
+  .left-panel,
+  .center-panel,
+  .right-panel {
+    width: 100%;
+    margin: 0;
+  }
+
+  /* Stack inputs vertically */
+  .capacity-row,
+  .put-section,
+  .get-section {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .controls input,
+  .controls button {
+    width: 90%;
+    max-width: 320px;
+  }
+
+  /* Mode buttons side-by-side */
+  .mode-selector {
+    flex-direction: row;
+  }
+
+  /* Timeline spacing */
+  .timeline-control {
+    width: 90%;
+  }
+
+  /* Logs spacing */
+  .logs {
+    margin: 16px;
+  }
+}
+
+/* ---------- EXTRA CLEAN POLISH ---------- */
+.logs {
+  line-height: 1.6;
+}
+
+.cache-view {
+  margin-top: 12px;
+}

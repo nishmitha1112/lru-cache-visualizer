@@ -1,0 +1,52 @@
+/* ================= THEMES ================= */
+
+.theme-dark,
+.theme-dark .controls,
+.theme-dark .cache-view,
+.theme-dark .stats-panel,
+.theme-dark .log-panel {
+  background-color: #020617 !important;
+  color: #e5e7eb !important;
+}
+
+.theme-light,
+.theme-light .controls,
+.theme-light .cache-view,
+.theme-light .stats-panel,
+.theme-light .log-panel {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+.theme-minimal,
+.theme-minimal .controls,
+.theme-minimal .cache-view,
+.theme-minimal .stats-panel,
+.theme-minimal .log-panel {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+}
+
+/* ================= THEME SWITCHER ================= */
+
+.theme-switcher {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.theme-switcher button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #64748b;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.theme-switcher button.active {
+  background-color: #38bdf8;
+  color: #020617;
+  border-color: #38bdf8;
+}

@@ -1,0 +1,45 @@
+/* ===== LOG PANEL STYLING ===== */
+
+.log-panel {
+  margin-top: 24px;
+  padding: 16px 20px;
+  border-radius: 12px;
+
+  /* background contrast */
+  background: rgba(255, 255, 255, 0.06);
+
+  /* subtle separation */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  /* depth */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* Title inside log panel */
+.log-panel h3,
+.log-panel h2 {
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+/* Individual log lines */
+.log-panel .log-item {
+  margin-bottom: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Scrollbar (optional, looks premium) */
+.log-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.log-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}

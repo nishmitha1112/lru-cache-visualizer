@@ -1,0 +1,29 @@
+/* ================= MOBILE CONTROLS ================= */
+
+@media (max-width: 768px) {
+  .controls input,
+  .controls button {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .mode-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .mode-buttons button {
+    flex: 1;
+  }
+}
+/* ================= TIMELINE RESPONSIVE ================= */
+
+.timeline-control input[type="range"] {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .timeline-control label {
+    font-size: 13px;
+  }
+}

@@ -1,0 +1,21 @@
+/* ================= RESPONSIVE CACHE VIEW ================= */
+
+.cache-view {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.cache-card-wrapper {
+  min-width: 70px;
+}
+
+/* Smaller cards on very small screens */
+@media (max-width: 480px) {
+  .cache-card {
+    width: 70px;
+    height: 70px;
+    font-size: 12px;
+  }
+}
