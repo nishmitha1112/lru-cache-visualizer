@@ -8,26 +8,38 @@ import "./styles/global.css";
 import "./styles/animations.css";
 import "./styles/themes.css";
 import LeftPanel from "./components/LeftPanel";
-
+import { useState, useEffect } from "react";
 
 function App() {
+  const [theme, setTheme] = useState("dark");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.remove("dark", "light");
+    document.body.classList.add(theme);
+  }, [theme]);
 
   return (
     <CacheProvider>
-      <Header />
-
-      
-      <div className="main-layout">
-        <LeftPanel />
-
-        <div className="center-panel">
-          <ControlPanel />
-          <StatsPanel />
-          <CacheView />
-          <LogPanel />
-        </div>
-
-        <div className="right-panel"></div>
+      <div className="app-shell">
+        <Header theme={theme} setTheme={setTheme} />
+        <main className="main-layout">
+          <div className="left-section">
+            <LeftPanel />
+            <CacheView />
+          </div>
+          <div className="right-section">
+            <ControlPanel />
+            <StatsPanel />
+            <LogPanel />
+          </div>
+        </main>
       </div>
     </CacheProvider>
   );

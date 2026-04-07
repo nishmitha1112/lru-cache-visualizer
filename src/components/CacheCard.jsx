@@ -1,6 +1,6 @@
 import { useCache } from "../context/CacheContext";
 
-const CacheCard = ({ item, isLRU }) => {
+const CacheCard = ({ item, isMRU, isLRU }) => {
   const { displayedState } = useCache();
 const { activeKey, lastAction, evictedKey } = displayedState;
 
@@ -10,6 +10,7 @@ const { activeKey, lastAction, evictedKey } = displayedState;
 
   let className = "cache-card";
 
+  if (isMRU) className += " mru";
   if (isLRU) className += " lru";
   if (isActive && lastAction === "HIT") className += " hit-anim";
   if (isActive && lastAction === "PUT") className += " put-anim";
@@ -23,11 +24,10 @@ return (
       <div className="value">{item.value}</div>
     </div>
 
-    {isLRU && (
-      <div className="lru-indicator">
-        ↑ LRU
-      </div>
-    )}
+    <div className="position-badges">
+      {isMRU && <div className="position-indicator mru-indicator" title="Most Recently Used - this item was accessed or added last">MRU</div>}
+      {isLRU && <div className="position-indicator lru-indicator" title="Least Recently Used - this item will be evicted next if cache is full">LRU</div>}
+    </div>
   </div>
 );
 };

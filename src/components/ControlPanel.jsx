@@ -30,17 +30,23 @@ const ControlPanel = () => {
   const isDisabled = isAnimating || isViewingHistory;
 
   return (
-    <div className="controls">
+    <section className="panel-card controls-panel">
+      <div className="panel-header">
+        <div>
+          <div className="panel-title">Cache Control</div>
+          <div className="panel-subtitle">Configure capacity and run operations</div>
+        </div>
+      </div>
 
-      {/* ================= TOP: Capacity + Reset ================= */}
       <div className="capacity-row">
         <input
           type="text"
           inputMode="numeric"
           pattern="[0-9]*"
-          placeholder="Enter Capacity"
+          placeholder="Capacity"
           value={capacityInput}
           disabled={isDisabled || isCapacityLocked}
+          title="Set the maximum number of items the cache can hold"
           onChange={(e) => {
             const val = e.target.value;
             if (val === "") {
@@ -66,44 +72,60 @@ const ControlPanel = () => {
             setCapacityInput("");
           }}
         >
-          Reset Cache
+          🔄 Reset Cache
         </button>
       </div>
 
-      {/* ================= MODE SELECTOR ================= */}
       <div className="mode-selector">
-        <span>Choose one:</span>
+        <span>Mode</span>
         <button
           disabled={isDisabled}
           className={mode === "PUT" ? "active" : ""}
           onClick={() => setMode("PUT")}
+          title="Switch to PUT mode to add or update cache items"
         >
-          PUT
+          ➕ PUT
         </button>
         <button
           disabled={isDisabled}
           className={mode === "GET" ? "active" : ""}
           onClick={() => setMode("GET")}
+          title="Switch to GET mode to retrieve cache items"
         >
-          GET
+          🔍 GET
         </button>
       </div>
 
-      {/* ================= PUT SECTION ================= */}
       {mode === "PUT" && (
         <div className="put-section">
           <input
-            placeholder="Enter Key"
+            placeholder="Key"
             value={key}
             onChange={(e) => setKey(e.target.value)}
             disabled={isDisabled}
+            title="Enter the key for the cache item"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !isDisabled) {
+                handlePut(key, value);
+                setKey("");
+                setValue("");
+              }
+            }}
           />
 
           <input
-            placeholder="Enter Value"
+            placeholder="Value"
             value={value}
             onChange={(e) => setValue(e.target.value)}
             disabled={isDisabled}
+            title="Enter the value for the cache item"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !isDisabled) {
+                handlePut(key, value);
+                setKey("");
+                setValue("");
+              }
+            }}
           />
 
           <button
@@ -113,21 +135,28 @@ const ControlPanel = () => {
               setKey("");
               setValue("");
             }}
+            title="Add or update the item in the cache"
           >
-            Execute PUT
+            🚀 Execute PUT
           </button>
         </div>
       )}
 
-      {/* ================= GET SECTION ================= */}
       {mode === "GET" && (
         <div className="get-section">
           <input
-            placeholder="Enter Key"
+            placeholder="Key"
             value={key}
             onChange={(e) => setKey(e.target.value)}
             disabled={isDisabled}
             className={lastAction === "MISS" ? "miss-anim" : ""}
+            title="Enter the key to retrieve from the cache"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !isDisabled) {
+                handleGet(key);
+                setKey("");
+              }
+            }}
           />
 
           <button
@@ -136,15 +165,13 @@ const ControlPanel = () => {
               handleGet(key);
               setKey("");
             }}
+            title="Retrieve the item from the cache"
           >
-            Execute GET
+            🔍 Execute GET
           </button>
         </div>
       )}
 
-      
-
-      {/* ================= TIMELINE ================= */}
       {history.length > 0 && (
         <div className="timeline-control">
           <label>
@@ -166,9 +193,7 @@ const ControlPanel = () => {
           )}
         </div>
       )}
-
-     
-    </div>
+    </section>
   );
 };
 

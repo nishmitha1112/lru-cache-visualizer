@@ -4,23 +4,29 @@ const LeftPanel = () => {
   const { cacheState, capacity } = useCache();
 
   return (
-    <div className="left-panel">
+    <aside className="left-panel panel-card">
+      <div className="panel-header">
+        <div>
+          <div className="panel-title">Capacity</div>
+          <div className="panel-subtitle">Current cache usage</div>
+        </div>
+      </div>
       <div className="cache-usage">
         <div className="usage-text">
-          Cache Usage: {cacheState.length} / {capacity}
+          {cacheState.length} / {capacity}
         </div>
 
         <div className="usage-bar">
           <div
             className="usage-fill"
             style={{
-             height: `${(cacheState.length / capacity) * 100}%`
+             width: `${(cacheState.length / capacity) * 100}%`
 
             }}
           />
         </div>
       </div>
-    </div>
+    </aside>
   );
 };
 
